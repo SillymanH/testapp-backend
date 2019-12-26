@@ -39,10 +39,14 @@
         }
         
         public function isEmailUsernameExist($username, $email){
+
+            echo "In the isEmailUsernameExist\n";
             
             $query = "select * from ".$this->db_table." where username = '$username' AND email = '$email'";
             
             $result = mysqli_query($this->db->getDb(), $query);
+
+            echo 'rows= '.mysqli_num_rows($result);
             
             if(mysqli_num_rows($result) > 0){
                 
@@ -51,7 +55,7 @@
                 return true;
                 
             }
-               
+            echo "Returning false\n";
             return false;
             
         }
@@ -62,11 +66,15 @@
         
         public function createNewRegisterUser($fullname, $username, $password, $email, $mobileNumber){
 
-            echo "In createNewRegisterUser\n";
+//            echo "In createNewRegisterUser\n";
               
             $isExisting = $this->isEmailUsernameExist($username, $email);
+
+            echo $isExisting ? 'true' : 'false';
             
             if($isExisting){
+
+                echo "in the if condition\n";
                 
                 $json['success'] = 0;
                 $json['message'] = "Error in registering. Probably the username/email already exists";
@@ -78,9 +86,11 @@
                 
                 if($isValid)
                 {
-                $query = "insert into ".$this->db_table." (username, password, email, created_at, updated_at, fullname, mobileNumber) values ('$username', '$password', '$email', NOW(), NOW(), $fullname, $mobileNumber)";
+                $query = "insert into ".$this->db_table." (username, password, email, created_at, updated_at, fullname, mobileNumber) values ('$username', '$password', '$email', NOW(), NOW(), '$fullname', '$mobileNumber')";
                 
                 $inserted = mysqli_query($this->db->getDb(), $query);
+
+                echo 'Inserted = ' .$inserted;
                 
                 if($inserted == 1){
                     

@@ -12,14 +12,14 @@
     
     $mobileNumber = "";
 
-    echo "reached endpoint\n";
+//    echo "reached endpoint\n";
 
     if(isset($_POST['username'])){
 
-         echo "Posting username\n";
+//         echo "Posting username\n";
         
         $username = $_POST['username'];
-        echo $username+"\n";
+//        echo $username+"\n";
         
     }
 
@@ -27,28 +27,28 @@
     if(isset($_POST['password'])){
         
         $password = $_POST['password'];
-        echo $password+"\n";
+//        echo $password+"\n";
         
     }
     
     if(isset($_POST['email'])){
         
         $email = $_POST['email'];
-        echo $email+"\n";
+//        echo $email+"\n";
         
     }
     
     if(isset($_POST['fullname'])){
            
            $fullName = $_POST['fullname'];
-           echo $fullName+"\n";
+//           echo $fullName+"\n";
            
        }
     
     if(isset($_POST['mobileNumber'])){
         
         $mobileNumber = $_POST['mobileNumber'];
-        echo $mobileNumber+"\n";
+//        echo $mobileNumber+"\n";
         
     }
     // echo "Username is " + $_POST['username'] +"\n";
@@ -57,10 +57,10 @@
     
     // Registration
     
-    echo "Checking the if condition\n";
-    if(!empty($fullname) && !empty($username) && !empty($password) && !empty($email) && !empty($mobileNumber)){
+//    echo "Checking the if condition\n";
+    if(!empty($fullName) && !empty($username) && !empty($password) && !empty($email) && !empty($mobileNumber)){
 
-        echo "In the if condition\n";
+//        echo "In the if condition\n";
         
         $hashed_password = md5($password);
         
@@ -69,7 +69,7 @@
         echo json_encode($json_registration);
         
     }
-    echo "Skipped the if condition\n";
+//    echo "Skipped the if condition\n";
     
     // Login
     
