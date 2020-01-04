@@ -40,13 +40,13 @@
         
         public function isEmailUsernameExist($username, $email){
 
-            echo "In the isEmailUsernameExist\n";
+//            echo "In the isEmailUsernameExist\n";
             
             $query = "select * from ".$this->db_table." where username = '$username' AND email = '$email'";
             
             $result = mysqli_query($this->db->getDb(), $query);
 
-            echo 'rows= '.mysqli_num_rows($result);
+//            echo 'rows= '.mysqli_num_rows($result);
             
             if(mysqli_num_rows($result) > 0){
                 
@@ -55,7 +55,7 @@
                 return true;
                 
             }
-            echo "Returning false\n";
+//            echo "Returning false\n";
             return false;
             
         }
@@ -70,11 +70,11 @@
               
             $isExisting = $this->isEmailUsernameExist($username, $email);
 
-            echo $isExisting ? 'true' : 'false';
+//            echo $isExisting ? 'true' : 'false';
             
             if($isExisting){
 
-                echo "in the if condition\n";
+//                echo "in the if condition\n";
                 
                 $json['success'] = 0;
                 $json['message'] = "Error in registering. Probably the username/email already exists";
@@ -90,7 +90,7 @@
                 
                 $inserted = mysqli_query($this->db->getDb(), $query);
 
-                echo 'Inserted = ' .$inserted;
+//                echo 'Inserted = ' .$inserted;
                 
                 if($inserted == 1){
                     
