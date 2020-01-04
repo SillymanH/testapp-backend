@@ -10,6 +10,8 @@
 
     $interaction = "";
 
+    $action = "";
+
     if(isset($_POST['userId'])){
 
         $userId = $_POST['userId'];
@@ -30,11 +32,16 @@
         $interaction = $_POST['interaction'];
     }
 
+    if (isset($_POST['action'])){
+
+        $action = $_POST['action'];
+    }
+
     $interactionObj = new InteractionsInfo();
 
-    if(!empty($userId) && !empty($videoId) && !empty($videoURL) && !empty($interaction)){
+    if(!empty($userId) && !empty($videoId) && !empty($videoURL) && !empty($interaction) && !empty($action)){
 
-        $json_response_array = $interactionObj->setInteraction($userId, $videoId, $videoURL, $interaction);
+        $json_response_array = $interactionObj->setInteraction($userId, $videoId, $videoURL, $interaction, $action);
         echo json_encode($json_response_array);
     }
 ?>
