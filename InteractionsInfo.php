@@ -53,34 +53,29 @@ class InteractionsInfo {
         }
 
         $db_connection =  $this->db->getDb();
-//        $interactionResults = mysqli_query($this->db->getDb(), $userInteractionQuery);
-        $interactionResults = $db_connection->query($userInteractionQuery); // Did not use mysqli_query because it always gives true with DELETE even when query fails
+        $db_connection->query($userInteractionQuery); // Did not use mysqli_query because it always gives true with DELETE even when query fails
 
-//        echo "entering the if";
         if($db_connection->affected_rows != 0) {
 
-            $updateQueryResult = mysqli_query($this->db->getDb(), $updateQuery);
+            $updateQueryResult = mysqli_query($db_connection, $updateQuery);
 
             if ($updateQueryResult){
 
                 $json['success'] = 1;
                 $json['message'] = "Successfully registered interaction";
 
-                mysqli_query($this->db->getDb(), $updateQuery);
-
             } else {
 
                 $json['success'] = 0;
-                $json['message'] = "Could not register interaction";
+                $json['message'] = "Could not update interaction";
             }
-//            mysqli_query($this->db->getDb(), $userInteractionQuery);
-
 
         } else {
 
             $json['success'] = 0;
             $json['message'] = "Could not set interaction";
         }
+        $db_connection->close();
         return $json;
     }
 }
