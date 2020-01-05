@@ -56,11 +56,11 @@ class InteractionsInfo {
             // $interaction = 1 means a LIKE interaction
             case "1":
 
-                if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
+                if ($action == "SET_INTERACTION") { // SET_INTERACTION means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoLikes);
                 }
-                if ($action == 0) { // $action = 0 means an UNLIKE action (LIKE button unpressed)
+                if ($action == "UNSET_INTERACTION") { // UNSET_INTERACTION means an UNLIKE action (LIKE button unpressed)
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->interactionTypeAttribute, $this->videoLikes);
                 }
@@ -68,22 +68,22 @@ class InteractionsInfo {
             // $interaction = 2 means a DISLIKE interaction
             case "2":
 
-                if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
+                if ($action == "SET_INTERACTION") { // SET_INTERACTION means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoDislikes);
                 }
-                if ($action == "UNSET_INTERACTION") { // $action = 0 means an UNLIKE action (LIKE button unpressed)
+                if ($action == "UNSET_INTERACTION") { // UNSET_INTERACTION means an UNLIKE action (LIKE button unpressed)
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->interactionTypeAttribute, $this->videoDislikes);
                 }
                 break;
             case "3":   // $interaction = 3 means a SHARE interaction
 
-                if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
+                if ($action == "SET_INTERACTION") { // SET_INTERACTION means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoShares);
                 }
-                if ($action == "UNSET_INTERACTION") { // $action = 0 means an UNLIKE action (LIKE button unpressed)
+                if ($action == "UNSET_INTERACTION") { // UNSET_INTERACTION means an UNLIKE action (LIKE button unpressed)
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->interactionTypeAttribute, $this->videoShares);
                 }
@@ -101,11 +101,11 @@ class InteractionsInfo {
                 break;
             case "5":  // $interaction = 5 means a SAVE interaction
 
-                if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
+                if ($action == "SET_INTERACTION") { // SET_INTERACTION means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoSave);
                 }
-                if ($action == "UNSET_INTERACTION") { // $action = 0 means an UNLIKE action (LIKE button unpressed)
+                if ($action == "UNSET_INTERACTION") { // UNSET_INTERACTION means an UNLIKE action (LIKE button unpressed)
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->interactionTypeAttribute, $this->videoSave);
                 }
