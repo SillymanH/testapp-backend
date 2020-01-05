@@ -33,12 +33,9 @@ class InteractionsInfo {
         $this->interactionQuery = "INSERT INTO ".$this->db_table_interactions." ($userIdAttribute, $videoIdAttribute, $videoURLAttribute, $interactionTypeAttribute) 
                                    VALUES ('$userId', '$videoId', '$videoURL', '$interactionType')";
 
-        echo $this->interactionQuery;
-
         $this->updateQuery = "UPDATE $this->db_table_video
                               SET  $interaction = $interaction + 1
                               WHERE $this->db_table_video.$videoIdAttribute = $videoId";
-        echo  $this->updateQuery ."\n";
     }
 
     private function unsetInteraction($userId, $videoId, $interactionType, $userIdAttribute, $videoIdAttribute, $interactionTypeAttribute, $interaction) {
@@ -51,7 +48,6 @@ class InteractionsInfo {
             $this->updateQuery = "UPDATE $this->db_table_video
                                   SET  $interaction = $interaction - 1
                                   WHERE $this->db_table_video.$videoIdAttribute = $videoId";
-            echo  $this->updateQuery ."\n";
     }
 
     public function doAction($userId, $videoId, $videoURL, $interaction, $action){
@@ -71,14 +67,12 @@ class InteractionsInfo {
                 break;
             // $interaction = 2 means a DISLIKE interaction
             case "2":
-                echo "in case 2";
 
                 if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoDislikes);
                 }
                 if ($action == "UNSET_INTERACTION") { // $action = 0 means an UNLIKE action (LIKE button unpressed)
-                    echo "in the 0 action";
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
                         $this->interactionTypeAttribute, $this->videoDislikes);
                 }
@@ -98,22 +92,22 @@ class InteractionsInfo {
 
                 if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
-                        $this->videoURLAttribute, $this->interactionAttribute, $this->videoDownloads);
+                        $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoDownloads);
                 }
                 if ($action == "UNSET_INTERACTION") { // $action = 0 means an UNLIKE action (LIKE button unpressed)
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
-                        $this->interactionAttribute, $this->videoDownloads);
+                        $this->interactionTypeAttribute, $this->videoDownloads);
                 }
                 break;
             case "5":  // $interaction = 5 means a SAVE interaction
 
                 if ($action == "SET_INTERACTION") { // $action = 1 means a LIKE action
                     $this->setInteraction($userId, $videoId, $videoURL, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
-                        $this->videoURLAttribute, $this->interactionAttribute, $this->videoSave);
+                        $this->videoURLAttribute, $this->interactionTypeAttribute, $this->videoSave);
                 }
                 if ($action == "UNSET_INTERACTION") { // $action = 0 means an UNLIKE action (LIKE button unpressed)
                     $this->unsetInteraction($userId, $videoId, $interaction, $this->userIdAttribute, $this->videoIdAttribute,
-                        $this->interactionAttribute, $this->videoSave);
+                        $this->interactionTypeAttribute, $this->videoSave);
                 }
                 break;
             default:
@@ -122,7 +116,6 @@ class InteractionsInfo {
 
         $db_connection =  $this->db->getDb();
         $db_connection->query($this->interactionQuery); // Did not use mysqli_query because it always gives true with DELETE even when query fails
-        echo $db_connection->affected_rows ."\n";
 
         if($db_connection->affected_rows > 0) {
 
