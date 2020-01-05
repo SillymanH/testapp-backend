@@ -36,12 +36,14 @@
 
         $action = $_POST['action'];
     }
+    echo $action;
 
     $interactionObj = new InteractionsInfo();
 
     if(!empty($userId) && !empty($videoId) && !empty($videoURL) && !empty($interaction) && !empty($action)){
+        echo "inside the if";
 
-        $json_response_array = $interactionObj->setInteraction($userId, $videoId, $videoURL, $interaction, $action);
+        $json_response_array = $interactionObj->doAction($userId, $videoId, $videoURL, $interaction, $action);
         echo json_encode($json_response_array);
     }
 ?>
