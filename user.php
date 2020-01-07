@@ -32,7 +32,7 @@
             
 //            $query = "select * from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
 
-            $query = "select id, email, fullname, mobileNumber  from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
+            $query = "select id, username, email, fullname, mobileNumber  from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
             
             $result = mysqli_query($this->db->getDb(), $query);
             
@@ -67,7 +67,7 @@
                 return true;
                 
             }
-            echo "Returning false\n";
+//            echo "Returning false\n";
             return false;
             
         }
@@ -106,14 +106,14 @@
                 
                 if($inserted == 1){
 
-                    $userIdQuery = "select id from ".$this->db_table." where username = '$username' AND email = '$email'";
-
-                    $result = mysqli_query($this->db->getDb(), $userIdQuery);
-
-                    $this->output = $result->fetch_array(MYSQLI_ASSOC);
+//                    $userIdQuery = "select id from ".$this->db_table." where username = '$username' AND email = '$email'";
+//
+//                    $result = mysqli_query($this->db->getDb(), $userIdQuery);
+//
+//                    $this->output = $result->fetch_array(MYSQLI_ASSOC);
 
                     $json['success'] = 1;
-                    $json['info'] = $this->output;
+                    $json['message'] = "Registered Successfully";
                     
                 }else{
                     
@@ -147,7 +147,7 @@
             if($canUserLogin){
                 
                 $json['success'] = 1;
-                $json['message'] = $this->output;
+                $json['info'] = json_encode($this->output);
                 
             }else{
                 $json['success'] = 0;
