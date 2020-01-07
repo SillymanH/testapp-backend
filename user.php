@@ -6,31 +6,43 @@
     class User{
         
         private $db;
-        
+
         private $db_table = "users";
-        
-        public function __construct(){
+
+        //Table Attributes
+//        private $userId;
+        private $username;
+        private $password;
+//        private $email;
+//        private $fullname;
+//        private $mobileNumber;
+        private $output; // Query response
+
+        public function __construct($username, $password){
+
+            $this->username = $username;
+            $this->password = $password;
             $this->db = new DbConnect();
         }
+
         
         public function isLoginExist($username, $password){
+
+//            echo "Checking isloginexist";
             
-            $query = "select * from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
+//            $query = "select * from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
+
+            $query = "select id, email, fullname, mobileNumber  from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
             
             $result = mysqli_query($this->db->getDb(), $query);
             
             if(mysqli_num_rows($result) > 0){
 
-                // echo "User exist";
-                
-                mysqli_close($this->db->getDb());
-                
-                
-                return true;
-                
-            }
+                $this->output = $result->fetch_array(MYSQLI_ASSOC);
 
-            // echo "User does not exist";
+                mysqli_close($this->db->getDb());
+                return true;
+            }
             
             mysqli_close($this->db->getDb());
             
@@ -40,13 +52,13 @@
         
         public function isEmailUsernameExist($username, $email){
 
-            echo "In the isEmailUsernameExist\n";
+//            echo "In the isEmailUsernameExist\n";
             
             $query = "select * from ".$this->db_table." where username = '$username' AND email = '$email'";
             
             $result = mysqli_query($this->db->getDb(), $query);
 
-            echo 'rows= '.mysqli_num_rows($result);
+//            echo 'rows= '.mysqli_num_rows($result);
             
             if(mysqli_num_rows($result) > 0){
                 
@@ -70,11 +82,11 @@
               
             $isExisting = $this->isEmailUsernameExist($username, $email);
 
-            echo $isExisting ? 'true' : 'false';
+//            echo $isExisting ? 'true' : 'false';
             
             if($isExisting){
 
-                echo "in the if condition\n";
+//                echo "in the if condition\n";
                 
                 $json['success'] = 0;
                 $json['message'] = "Error in registering. Probably the username/email already exists";
@@ -90,12 +102,18 @@
                 
                 $inserted = mysqli_query($this->db->getDb(), $query);
 
-                echo 'Inserted = ' .$inserted;
+//                echo 'Inserted = ' .$inserted;
                 
                 if($inserted == 1){
-                    
+
+                    $userIdQuery = "select id from ".$this->db_table." where username = '$username' AND email = '$email'";
+
+                    $result = mysqli_query($this->db->getDb(), $userIdQuery);
+
+                    $this->output = $result->fetch_array(MYSQLI_ASSOC);
+
                     $json['success'] = 1;
-                    $json['message'] = "Successfully registered the user";
+                    $json['info'] = $this->output;
                     
                 }else{
                     
@@ -122,11 +140,14 @@
             $json = array();
             
             $canUserLogin = $this->isLoginExist($username, $password);
+
+//            echo $canUserLogin ? "true" : "false";
+//            echo "Inside the loginUsers";
             
             if($canUserLogin){
                 
                 $json['success'] = 1;
-                $json['message'] = "Successfully logged in";
+                $json['message'] = $this->output;
                 
             }else{
                 $json['success'] = 0;

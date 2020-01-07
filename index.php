@@ -53,7 +53,7 @@
     }
     // echo "Username is " + $_POST['username'] +"\n";
     // echo "Creating userObj\n";
-    $userObject = new User();
+    $userObject = new User($username, $password);
     
     // Registration
     
@@ -74,6 +74,8 @@
     // Login
     
     if(!empty($username) && !empty($password) && empty($email)){
+
+//        echo "Inside the if condition";
         
         $hashed_password = md5($password);
         
