@@ -147,7 +147,7 @@
             if($canUserLogin){
                 
                 $json['success'] = 1;
-                $json['info'] = json_encode($this->output);
+                $json['info'] = $this->output;
                 
             }else{
                 $json['success'] = 0;
