@@ -52,6 +52,7 @@ class ChannelsInfo {
             $json['success'] = 1;
 
             mysqli_close($this->db->getDb());
+
         }else {
 
             $output = 'Failed to get channel info';

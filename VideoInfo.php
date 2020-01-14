@@ -19,12 +19,10 @@ class VideoInfo
     private $videoTitle;
     private $youtubeVideoId;
 
-    private $output; //Query response
+    private $output = array(); //Query response
 
 
-    public function __construct($youtubeVideoId) {
-
-        $this->youtubeVideoId = $youtubeVideoId;
+    public function __construct() {
         $this->db = new DbConnect();
     }
 
@@ -142,7 +140,34 @@ class VideoInfo
 
         mysqli_close($this->db->getDb());
         return $json;
+    }
 
+    public function getRandomVideos($numberOfVideos) {
+
+        $query = $this->db->getDb()->prepare("SELECT *
+                  FROM ".$this->db_table." 
+                  Limit $numberOfVideos");
+
+        $query->execute();
+        $result = $query->get_result(); // mysqli_query($this->db->getDb(), $query);
+
+        if(mysqli_num_rows($result) > 0) {
+
+            foreach ($result as $row) {
+                array_push($this->output, $row);
+            }
+
+            $json['success'] = 1;
+            $json['info'] = $this->output;
+
+        } else {
+
+            $json['success'] = 0;
+            $json['info'] = "Unable to shuffle videos!";
+        }
+
+        mysqli_close($this->db->getDb());
+        return $json;
     }
 
 }
