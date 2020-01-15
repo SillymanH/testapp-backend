@@ -10,19 +10,6 @@ class InteractionsInfo {
     private $interactionQuery;
     private $updateQuery;
 
-    //Videos table attributes
-//    private $videoLikes = "video_likes";
-//    private $videoDislikes = "video_dislikes";
-//    private $videoShares = "video_shares";
-//    private $videoDownloads = "video_downloads";
-//    private $videoSave = "video_saves";
-
-    //user_interactions table attributes
-//    private $userIdAttribute = "user_id";
-//    private $videoIdAttribute = "video_id";
-//    private $videoURLAttribute = "video_url";
-//    private $interactionTypeAttribute = "interaction";
-
 
     public function __construct(){
         $this->db = new DbConnect();
@@ -41,7 +28,7 @@ class InteractionsInfo {
             $this->interactionQuery = "DELETE FROM " . $this->db_table_interactions .
                                      " WHERE user_id = $userId 
                                        AND   video_id = $videoId 
-                                       AND video_url =  $interactionType";
+                                       AND interaction =  $interactionType";
         }
     }
 
@@ -94,7 +81,7 @@ class InteractionsInfo {
 
         $db_connection =  $this->db->getDb();
         $db_connection->query($this->interactionQuery); // Did not use mysqli_query because it always gives true with DELETE even when query fails
-
+        
         if($db_connection->affected_rows > 0) {
 
             $updateQueryResult = mysqli_query($db_connection, $this->updateQuery);
