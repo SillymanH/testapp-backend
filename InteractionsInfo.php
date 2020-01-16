@@ -17,33 +17,40 @@ class InteractionsInfo {
 
     private function setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action) {
 
-        if ($action == "SET_INTERACTION") { // SET_INTERACTION means a LIKE action
+//        if ($action == "SET_INTERACTION" || $action = "DOWNLOAD" || $action = "SHARE" || $action = "SAVE") {
 
-            $this->interactionQuery = "INSERT INTO ".$this->db_table_interactions." (user_id, video_id, video_url, interaction) 
-                                        VALUES ('$userId', '$videoId', '$videoURL', '$interactionType')";
-        }
 
-        if ($action == "UNSET_INTERACTION") { // UNSET_INTERACTION means an UNLIKE action (LIKE button unpressed)
+
+//            echo $userId." ".$videoId." ".$videoURL." ".$interactionType;
+
+//        }
+
+        if ($action == "UNSET_INTERACTION") {
 
             $this->interactionQuery = "DELETE FROM " . $this->db_table_interactions .
                                      " WHERE user_id = $userId 
                                        AND   video_id = $videoId 
                                        AND interaction =  $interactionType";
+
+        } else { // if $action == "SET_INTERACTION" || $action = "DOWNLOAD" || $action = "SHARE" || $action = "SAVE" interaction will be inserted
+
+            $this->interactionQuery = "INSERT INTO ".$this->db_table_interactions." (user_id, video_id, video_url, interaction) 
+                                        VALUES ('$userId', '$videoId', '$videoURL', '$interactionType')";
         }
     }
 
     private function updateVideoStatistics($videoId, $interaction, $action) {
 
-        if ($action == "SET_INTERACTION") { // SET_INTERACTION means a LIKE action
-            $this->updateQuery = "UPDATE $this->db_table_video
-                                  SET  $interaction = $interaction + 1
-                                  WHERE $this->db_table_video.video_id = $videoId";
-        }
-
-        if ($action == "UNSET_INTERACTION") { // UNSET_INTERACTION means an UNLIKE action (LIKE button unpressed)
+        if ($action == "UNSET_INTERACTION") {
 
             $this->updateQuery = "UPDATE $this->db_table_video
                                   SET  $interaction = $interaction - 1
+                                  WHERE $this->db_table_video.video_id = $videoId";
+
+        } else { // if $action == "SET_INTERACTION" || $action = "DOWNLOAD" || $action = "SHARE" || $action = "SAVE" interaction will be incremented
+
+            $this->updateQuery = "UPDATE $this->db_table_video
+                                  SET  $interaction = $interaction + 1
                                   WHERE $this->db_table_video.video_id = $videoId";
         }
     }
@@ -57,31 +64,39 @@ class InteractionsInfo {
                 $this->setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action);
                 $this->updateVideoStatistics($videoId, "video_likes", $action);
                     break;
-            // $interaction = 2 means a DISLIKE interaction
-            case "2":
+
+            case "2":   // $interaction = 2 means a DISLIKE interaction
 
                 $this->setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action);
                 $this->updateVideoStatistics($videoId, "video_dislikes", $action);
                     break;
+
             case "3":   // $interaction = 3 means a SHARE interaction
 
-                //TODO: Implement share functionality
-                break;
+                $this->setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action);
+                $this->updateVideoStatistics($videoId, "video_shares", $action);
+                    break;
+
             case "4":   // $interaction = 4 means a DOWNLOAD interaction
 
-                //TODO: Implement download functionality
-                break;
+                $this->setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action);
+                $this->updateVideoStatistics($videoId, "video_downloads", $action);
+                    break;
+
             case "5":  // $interaction = 5 means a SAVE interaction
 
-                //TODO: Implement save functionality
-                break;
+                $this->setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action);
+                $this->updateVideoStatistics($videoId, "video_saves", $action);
+                    break;
+
             default:
                 echo $this->interactionQuery = "Could not determine interaction!";
         }
 
         $db_connection =  $this->db->getDb();
         $db_connection->query($this->interactionQuery); // Did not use mysqli_query because it always gives true with DELETE even when query fails
-        
+
+        echo $db_connection->affected_rows;
         if($db_connection->affected_rows > 0) {
 
             $updateQueryResult = mysqli_query($db_connection, $this->updateQuery);
