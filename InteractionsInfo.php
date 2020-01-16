@@ -17,13 +17,11 @@ class InteractionsInfo {
 
     private function setUserInteraction($userId, $videoId, $videoURL, $interactionType, $action) {
 
-//        if ($action == "SET_INTERACTION" || $action = "DOWNLOAD" || $action = "SHARE" || $action = "SAVE") {
+        if ($action == "SET_INTERACTION" || $action == "DOWNLOAD" || $action == "SHARE" || $action == "SAVE") {
 
-
-
-//            echo $userId." ".$videoId." ".$videoURL." ".$interactionType;
-
-//        }
+            $this->interactionQuery = "INSERT INTO ".$this->db_table_interactions." (user_id, video_id, video_url, interaction) 
+                                        VALUES ('$userId', '$videoId', '$videoURL', '$interactionType')";
+        }
 
         if ($action == "UNSET_INTERACTION") {
 
@@ -32,14 +30,17 @@ class InteractionsInfo {
                                        AND   video_id = $videoId 
                                        AND interaction =  $interactionType";
 
-        } else { // if $action == "SET_INTERACTION" || $action = "DOWNLOAD" || $action = "SHARE" || $action = "SAVE" interaction will be inserted
-
-            $this->interactionQuery = "INSERT INTO ".$this->db_table_interactions." (user_id, video_id, video_url, interaction) 
-                                        VALUES ('$userId', '$videoId', '$videoURL', '$interactionType')";
         }
     }
 
     private function updateVideoStatistics($videoId, $interaction, $action) {
+
+        if ($action == "SET_INTERACTION" || $action == "DOWNLOAD" || $action == "SHARE" || $action == "SAVE") {
+
+            $this->updateQuery = "UPDATE $this->db_table_video
+                                  SET  $interaction = $interaction + 1
+                                  WHERE $this->db_table_video.video_id = $videoId";
+        }
 
         if ($action == "UNSET_INTERACTION") {
 
@@ -47,11 +48,6 @@ class InteractionsInfo {
                                   SET  $interaction = $interaction - 1
                                   WHERE $this->db_table_video.video_id = $videoId";
 
-        } else { // if $action == "SET_INTERACTION" || $action = "DOWNLOAD" || $action = "SHARE" || $action = "SAVE" interaction will be incremented
-
-            $this->updateQuery = "UPDATE $this->db_table_video
-                                  SET  $interaction = $interaction + 1
-                                  WHERE $this->db_table_video.video_id = $videoId";
         }
     }
 
