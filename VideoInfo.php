@@ -142,7 +142,7 @@ class VideoInfo
         return $json;
     }
 
-    public function getRandomVideos($numberOfVideos) {
+    public function getSuggestedVideos($numberOfVideos) {
 
         $query = $this->db->getDb()->prepare("SELECT *
                   FROM ".$this->db_table." 

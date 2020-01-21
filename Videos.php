@@ -25,7 +25,7 @@ require_once 'VideoInfo.php';
 
     if (empty($youtubeVideoId) && !empty($numberOfVideos)) {
 
-        $json_response = $videoInfoObj->getRandomVideos($numberOfVideos);
+        $json_response = $videoInfoObj->getSuggestedVideos($numberOfVideos);
     }
 
     echo json_encode($json_response);
