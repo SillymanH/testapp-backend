@@ -180,7 +180,10 @@ class VideoInfo
 
         if(mysqli_num_rows($result) > 0) {
 
-            $this->output = $result->fetch_array(MYSQLI_ASSOC);
+            foreach ($result as $row) {
+                array_push($this->output, $row);
+            }
+//            $this->output = $result->fetch_array(MYSQLI_ASSOC);
 
             $json['success'] = 1;
             $json['info'] = $this->output;
