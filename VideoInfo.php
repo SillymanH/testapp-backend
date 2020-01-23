@@ -170,4 +170,28 @@ class VideoInfo
         return $json;
     }
 
+    public function getChannelVideos($channelId) {
+
+        $query = "SELECT *
+                  FROM ".$this->db_table." 
+                  WHERE channel_id = '$channelId'";
+
+        $result = mysqli_query($this->db->getDb(), $query);
+
+        if(mysqli_num_rows($result) > 0) {
+
+            $this->output = $result->fetch_array(MYSQLI_ASSOC);
+
+            $json['success'] = 1;
+            $json['info'] = $this->output;
+        } else {
+
+            $json['success'] = 0;
+            $json['info'] = "Unable to get video details!";
+        }
+
+        mysqli_close($this->db->getDb());
+        return $json;
+    }
+
 }
