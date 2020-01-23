@@ -9,35 +9,29 @@ class ChannelsInfo {
     private $db_table = "channels";
 
     //Channel Properties
-    private $userId;
-    private $channelId;
-    private $videoId;
-    private $channelURL;
-    private $subscribersNumber;
-    private $dateCreated;
+//    private $userId;
+//    private $channelId;
+//    private $videoId;
+//    private $channelURL;
+//    private $subscribersNumber;
+//    private $dateCreated;
 
-    //Channel Table Attributes
-//    private $channelIdAttribute = "channel_id";
-//    private $userIdAttribute = "user_id";
-//    private $channelURLAttribute = "channel_url";
-//    private $subscribersNumberAttribute = "channel_subscribers_number";
-//    private $dateCreatedAttribute = "date_created";
-    //TODO: Add a new attribute $videoIdAttribute
+    public function __construct(){
 
-    public function __construct($userId, $channelId, $videoId, $channelURL, $subscribersNumber, $dateCreated){
-
-        $this->userId = $userId;
-        $this->channelId = $channelId;
-        $this->videoId = $videoId;
-        $this->channelURL = $channelURL;
-        $this->subscribersNumber = $subscribersNumber;
-        $this->dateCreated = $dateCreated;
+//        $this->userId = $userId;
+//        $this->channelId = $channelId;
+//        $this->videoId = $videoId;
+//        $this->channelURL = $channelURL;
+//        $this->subscribersNumber = $subscribersNumber;
+//        $this->dateCreated = $dateCreated;
         $this->db = new DbConnect();
     }
 
-    public function getChannelInfo($channelId){
+    public function getChannelInfo($userId, $channelId){
 
-        $query = "select *  from ".$this->db_table." where channel_id = $channelId";
+        $query = "SELECT *  FROM ".$this->db_table." 
+                  WHERE channel_id = $channelId
+                  AND user_id = $userId";
 
         $result = mysqli_query($this->db->getDb(), $query);
 
@@ -51,13 +45,12 @@ class ChannelsInfo {
             }
             $json['success'] = 1;
 
-            mysqli_close($this->db->getDb());
-
         }else {
 
             $output = 'Failed to get channel info';
             $json['success'] = 0;
         }
+        mysqli_close($this->db->getDb());
         $json['info'] = $output;
         return $json;
     }
