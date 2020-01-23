@@ -8,30 +8,16 @@ class ChannelsInfo {
 
     private $db_table = "channels";
 
-    //Channel Properties
-//    private $userId;
-//    private $channelId;
-//    private $videoId;
-//    private $channelURL;
-//    private $subscribersNumber;
-//    private $dateCreated;
 
     public function __construct(){
 
-//        $this->userId = $userId;
-//        $this->channelId = $channelId;
-//        $this->videoId = $videoId;
-//        $this->channelURL = $channelURL;
-//        $this->subscribersNumber = $subscribersNumber;
-//        $this->dateCreated = $dateCreated;
         $this->db = new DbConnect();
     }
 
-    public function getChannelInfo($userId, $channelId){
+    public function getChannelInfo($channelId){
 
         $query = "SELECT *  FROM ".$this->db_table." 
-                  WHERE channel_id = $channelId
-                  AND user_id = $userId";
+                  WHERE channel_id = $channelId";
 
         $result = mysqli_query($this->db->getDb(), $query);
 
@@ -39,11 +25,12 @@ class ChannelsInfo {
 
         if(mysqli_num_rows($result) > 0){
 
-            foreach ($result as $row) {
-
-                array_push($output, $row);
-            }
+//            foreach ($result as $row) {
+//
+//                array_push($output, $row);
+//            }
             $json['success'] = 1;
+            $json['info'] = $result->fetch_assoc();
 
         }else {
 
@@ -51,7 +38,7 @@ class ChannelsInfo {
             $json['success'] = 0;
         }
         mysqli_close($this->db->getDb());
-        $json['info'] = $output;
+//        $json['info'] = $output;
         return $json;
     }
 
