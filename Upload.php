@@ -4,7 +4,7 @@
     $lastName = $_POST["lastName"];
     $userId = $_POST["userId"];
 
-    $target_dir = "wp-content/uploads/2015/02";
+    $target_dir = "Uploads/wp-content/uploads/2015/02";
 
     if(!file_exists($target_dir))
     {
