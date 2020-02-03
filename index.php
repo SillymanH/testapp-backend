@@ -19,7 +19,7 @@
 //         echo "Posting username\n";
         
         $username = $_POST['username'];
-//        echo $username+"\n";
+//        echo $username."\n";
         
     }
 
@@ -27,40 +27,34 @@
     if(isset($_POST['password'])){
         
         $password = $_POST['password'];
-//        echo $password+"\n";
+//        echo $password."\n";
         
     }
     
     if(isset($_POST['email'])){
-        
+
         $email = $_POST['email'];
-//        echo $email+"\n";
+//        echo $email."\n";
         
     }
     
     if(isset($_POST['fullname'])){
            
            $fullName = $_POST['fullname'];
-//           echo $fullName+"\n";
+//           echo $fullName."\n";
            
        }
     
     if(isset($_POST['mobileNumber'])){
         
         $mobileNumber = $_POST['mobileNumber'];
-//        echo $mobileNumber+"\n";
+
         
     }
-    // echo "Username is " + $_POST['username'] +"\n";
-    // echo "Creating userObj\n";
-    $userObject = new User($username, $password);
-    
-    // Registration
-    
-//    echo "Checking the if condition\n";
-    if(!empty($fullName) && !empty($username) && !empty($password) && !empty($email) && !empty($mobileNumber)){
 
-//        echo "In the if condition\n";
+    $userObject = new User($username, $password);
+
+    if(!empty($fullName) && !empty($username) && !empty($password) && !empty($email) && !empty($mobileNumber)){
         
         $hashed_password = md5($password);
         
@@ -69,19 +63,19 @@
         echo json_encode($json_registration);
         
     }
-//    echo "Skipped the if condition\n";
-    
-    // Login
     
     if(!empty($username) && !empty($password) && empty($email)){
-
-//        echo "Inside the if condition";
         
         $hashed_password = md5($password);
         
-        $json_array = $userObject->loginUsers($username, $hashed_password);
+        $json_array = $userObject->loginUsers($username, $hashed_password, "");
         
         echo json_encode($json_array);
     }
-    // echo "Cannot detect parameters\n";
-    ?>
+
+if(empty($username) && empty($password) && !empty($email)){
+
+    $json_array = $userObject->loginUsers("", "", $email);
+
+    echo json_encode($json_array);
+}

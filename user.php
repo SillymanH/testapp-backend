@@ -10,12 +10,8 @@
         private $db_table = "users";
 
         //Table Attributes
-//        private $userId;
         private $username;
         private $password;
-//        private $email;
-//        private $fullname;
-//        private $mobileNumber;
         private $output; // Query response
 
         public function __construct($username, $password){
@@ -28,11 +24,7 @@
         
         public function isLoginExist($username, $password){
 
-//            echo "Checking isloginexist";
-            
-//            $query = "select * from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
-
-            $query = "select id, username, email, fullname, mobileNumber  from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
+            $query = "select id, username, email, fullname, mobileNumber, created_at, updated_at  from ".$this->db_table." where username = '$username' AND password = '$password' Limit 1";
             
             $result = mysqli_query($this->db->getDb(), $query);
             
@@ -52,24 +44,29 @@
         
         public function isEmailUsernameExist($username, $email){
 
-//            echo "In the isEmailUsernameExist\n";
-            
-            $query = "select * from ".$this->db_table." where username = '$username' AND email = '$email'";
-            
+            $query = "";
+            if (!empty($username) && !empty($email)) {
+
+                $query = "select id, email, fullname, mobileNumber, created_at, updated_at from ".$this->db_table." where username = '$username' AND email = '$email'";
+            }
+            if (empty($username) && !empty($email)) {
+
+                $query = "select id, username, fullname, mobileNumber, created_at, updated_at from ".$this->db_table." where email = '$email'";
+            }
+            if (empty($username) && empty($email)) {
+
+                return false;
+            }
             $result = mysqli_query($this->db->getDb(), $query);
 
-//            echo 'rows= '.mysqli_num_rows($result);
-            
             if(mysqli_num_rows($result) > 0){
-                
+
+                $this->output = $result->fetch_array(MYSQLI_ASSOC);
+
                 mysqli_close($this->db->getDb());
-                
                 return true;
-                
             }
-//            echo "Returning false\n";
             return false;
-            
         }
         
         public function isValidEmail($email){
@@ -106,11 +103,6 @@
                 
                 if($inserted == 1){
 
-//                    $userIdQuery = "select id from ".$this->db_table." where username = '$username' AND email = '$email'";
-//
-//                    $result = mysqli_query($this->db->getDb(), $userIdQuery);
-//
-//                    $this->output = $result->fetch_array(MYSQLI_ASSOC);
 
                     $json['success'] = 1;
                     $json['message'] = "Registered Successfully";
@@ -135,14 +127,20 @@
             
         }
         
-        public function loginUsers($username, $password){
+        public function loginUsers($username, $password, $email){
             
-            $json = array();
-            
-            $canUserLogin = $this->isLoginExist($username, $password);
+            $canUserLogin = false;
+            if (empty($username) && empty($password) && !empty($email)) {
 
-//            echo $canUserLogin ? "true" : "false";
-//            echo "Inside the loginUsers";
+                $canUserLogin = $this->isEmailUsernameExist($username, $email);
+//                echo $canUserLogin ? 'true' : 'false';
+            } else {
+
+                if (!empty($username) && !empty($password) && empty($email)) {
+
+                    $canUserLogin = $this->isLoginExist($username, $password);
+                }
+            }
             
             if($canUserLogin){
                 
@@ -156,4 +154,3 @@
             return $json;
         }
     }
-    ?>
