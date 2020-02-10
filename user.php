@@ -11,7 +11,7 @@
         private $db_table = "users";
         private $username;
         private $password;
-        private $clientId;
+        private $googleClientId = "1080373327907-vqf5i3ftqutka6krh3gdahp8nievakjp.apps.googleusercontent.com"; //Should be read from a file from more security
         private $output; // Query response
 
         public function __construct($username, $password){
@@ -161,7 +161,7 @@
         public function extractTokenData($tokenId) {
             // Get $id_token via HTTPS POST.
 
-            $client = new Google_Client(['client_id' => $this->clientId]);  // Specify the CLIENT_ID of the app that accesses the backend
+            $client = new Google_Client(['client_id' => $this->googleClientId]);  // Specify the CLIENT_ID of the app that accesses the backend
             $payload = $client->verifyIdToken($tokenId);
             if ($payload) {
                 $this -> output = $payload['email'];
