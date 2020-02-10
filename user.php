@@ -2,16 +2,16 @@
 <?php
     
     include_once 'db-connect.php';
+    require_once 'vendor/autoload.php';
+//    composer require 'google/apiclient';
     
     class User{
         
         private $db;
-
         private $db_table = "users";
-
-        //Table Attributes
         private $username;
         private $password;
+        private $clientId;
         private $output; // Query response
 
         public function __construct($username, $password){
@@ -127,19 +127,23 @@
             
         }
         
-        public function loginUsers($username, $password, $email){
+        public function loginUsers($username, $password, $email, $token){
             
             $canUserLogin = false;
-            if (empty($username) && empty($password) && !empty($email)) {
+            if (empty($username) && empty($password) && empty($token) && !empty($email)) {
 
                 $canUserLogin = $this->isEmailUsernameExist($username, $email);
-//                echo $canUserLogin ? 'true' : 'false';
-            } else {
+            }
+            if (empty($username) && empty($password) && empty($email) && !empty($token)) {
 
-                if (!empty($username) && !empty($password) && empty($email)) {
+                $this->extractTokenData($token);
 
-                    $canUserLogin = $this->isLoginExist($username, $password);
+                if (!empty($this->output) && $this->output != "Invalid Token") {
+
+                    $canUserLogin = $this->isEmailUsernameExist($username, $this->output);
                 }
+            }else {
+                $canUserLogin = $this->isLoginExist($username, $password);
             }
             
             if($canUserLogin){
@@ -152,5 +156,19 @@
                 $json['message'] = "Incorrect details";
             }
             return $json;
+        }
+
+        public function extractTokenData($tokenId) {
+            // Get $id_token via HTTPS POST.
+
+            $client = new Google_Client(['client_id' => $this->clientId]);  // Specify the CLIENT_ID of the app that accesses the backend
+            $payload = $client->verifyIdToken($tokenId);
+            if ($payload) {
+                $this -> output = $payload['email'];
+
+            } else {
+                $this -> output = "Invalid Token";
+            }
+            return $this -> output;
         }
     }

@@ -23,5 +23,3 @@
         $json_response_array = $channelObject->getChannelInfo($channelId);
         echo json_encode($json_response_array);
     }
-
-?>

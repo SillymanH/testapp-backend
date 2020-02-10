@@ -9,6 +9,8 @@
     $password = "";
     
     $email = "";
+
+    $gToken = "";
     
     $mobileNumber = "";
 
@@ -23,7 +25,6 @@
         
     }
 
-      
     if(isset($_POST['password'])){
         
         $password = $_POST['password'];
@@ -44,6 +45,10 @@
 //           echo $fullName."\n";
            
        }
+
+    if(isset($_POST['gtoken'])){
+        $gToken = $_POST['gtoken'];
+    }
     
     if(isset($_POST['mobileNumber'])){
         
@@ -64,18 +69,25 @@
         
     }
     
-    if(!empty($username) && !empty($password) && empty($email)){
+    if(!empty($username) && !empty($password) && empty($email) && empty($gToken)){
         
         $hashed_password = md5($password);
         
-        $json_array = $userObject->loginUsers($username, $hashed_password, "");
+        $json_array = $userObject->loginUsers($username, $hashed_password, "", "");
         
         echo json_encode($json_array);
     }
 
-if(empty($username) && empty($password) && !empty($email)){
+    if(empty($username) && empty($password) && empty($gToken) && !empty($email)){
 
-    $json_array = $userObject->loginUsers("", "", $email);
+        $json_array = $userObject->loginUsers("", "", $email, "");
 
-    echo json_encode($json_array);
-}
+        echo json_encode($json_array);
+    }
+
+    if(empty($username) && empty($password) && empty($email) && !empty($gToken)){
+
+        $json_array = $userObject->loginUsers("", "", "" ,$gToken);
+
+        echo json_encode($json_array);
+    }
