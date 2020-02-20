@@ -5,7 +5,7 @@
     require_once 'vendor/autoload.php';
 //    composer require 'google/apiclient';
     
-    class User{
+    class User {
         
         private $db;
         private $db_table = "users";
