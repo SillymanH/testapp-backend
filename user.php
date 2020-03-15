@@ -158,7 +158,7 @@
             return $json;
         }
 
-        public function extractTokenData($tokenId) {
+        public function extractTokenData($tokenId) { // This function is for login with google
             // Get $id_token via HTTPS POST.
 
             $client = new Google_Client(['client_id' => $this->googleClientId]);  // Specify the CLIENT_ID of the app that accesses the backend
