@@ -11,7 +11,7 @@
         private $db_table = "users";
         private $username;
         private $password;
-        private $googleClientId = "1080373327907-vqf5i3ftqutka6krh3gdahp8nievakjp.apps.googleusercontent.com"; //Should be read from a file for more security
+        private $googleClientId = ""; //Should be read from a file for more security
         private $output; // Query response
 
         public function __construct($username, $password){

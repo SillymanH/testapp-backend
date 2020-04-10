@@ -23,6 +23,7 @@
       <path value="$PROJECT_DIR$/vendor/delight-im/http" />
       <path value="$PROJECT_DIR$/vendor/delight-im/base64" />
       <path value="$PROJECT_DIR$/vendor/delight-im/auth" />
+      <path value="$PROJECT_DIR$/vendor/phpmailer/phpmailer" />
     </include_path>
   </component>
 </project>
