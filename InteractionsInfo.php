@@ -92,7 +92,7 @@ class InteractionsInfo {
         $db_connection =  $this->db->getDb();
         $db_connection->query($this->interactionQuery); // Did not use mysqli_query because it always gives true with DELETE even when query fails
 
-        echo $db_connection->affected_rows;
+//        echo $db_connection->affected_rows;
         if($db_connection->affected_rows > 0) {
 
             $updateQueryResult = mysqli_query($db_connection, $this->updateQuery);

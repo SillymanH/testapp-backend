@@ -18,15 +18,15 @@ function sendOTP($email,$otp) {
     $mail->SMTPAuth = TRUE;
     $mail->SMTPSecure = 'tls'; // tls or ssl
     $mail->Port     = "587";
-    $mail->Username = "";
-    $mail->Password = "";
+    $mail->Username = "sleiman19494@gmail.com";
+    $mail->Password = "Sweesforlife2";
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Host     = "smtp.gmail.com";
     $mail->Mailer   = "smtp";
-    $mail->SetFrom("", "Techsters");
+    $mail->SetFrom("sleiman19494@gmail.com", "Techsters");
     $mail->AddAddress($email);
     $mail->IsHTML(true);
-    $mail->Subject = "OTP to Login";
+    $mail->Subject = "Security Code";
     $mail->MsgHTML($message_body);
     $result = $mail->Send();
     return $result;

@@ -40,10 +40,11 @@ include_once 'db-connect.php';
         $success = "";
         $error_message = "";
         $conn = new DbConnect();
-        if (!empty($_POST["submit_email"])) {
+        if (isset($_POST["submit_email"])) {
             $result = mysqli_query($conn->getDb(), "SELECT * FROM users WHERE email='" . $_POST["submit_email"] . "'");
             $count = mysqli_num_rows($result);
             if ($count == 1) {
+
                 // generate OTP
                 $otp = rand(1000, 9999);
                 // Send OTP
@@ -62,20 +63,26 @@ include_once 'db-connect.php';
                     }
                 }
             } else {
+                $success = 0;
                 $error_message = "Email not exists!";
             }
         }
-        if (!empty($_POST["submit_otp"])) {
+        if (isset($_POST["submit_otp"])) {
             $result = mysqli_query($conn->getDb(), "SELECT * FROM otpstore WHERE otp='" . $_POST["submit_otp"] . "' AND is_expired!=1 AND NOW() <= DATE_ADD(create_at, INTERVAL 24 HOUR)");
             $count = mysqli_num_rows($result);
-            echo "count is ".$count;
             if (!empty($count)) {
                 $result = mysqli_query($conn->getDb(), "UPDATE otpstore SET is_expired = 1 WHERE otp = '" . $_POST["submit_otp"] . "'");
-                $success = 2;
-            } else {
                 $success = 1;
+            } else {
+                $success = 0;
                 $error_message = "Invalid OTP!";
             }
         }
+
+        $json['success'] = $success;
+         if (!empty($error_message))
+                $json['info'] = $error_message;
+
+        echo json_encode($json);
 
 
